@@ -487,7 +487,7 @@ A JSON object with the following parameters is returned.
 **Example request :** `POST /api/v1/buttons`
 ```javascript  
 {
-  "amount": 10.3, 
+  "price": 10.3, 
   "currency": "EUR",
   "name": "test"
 }
