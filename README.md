@@ -149,7 +149,7 @@ A JSON object with the following attributes is returned :
 {
   "GBP":"0.0",
   "EUR":"21.23"
-  //"BTC" : "0.00" will be returned if Split setting were activated for the account
+  //"BTC" : "0.00" will be returned if Split setting was activated for the account
 }
 ```
 
