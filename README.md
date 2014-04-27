@@ -178,7 +178,7 @@ This call creates an invoice
 | id                  | String  | Merchant assigned order ID _(optional)_                                      |
 | callback\_url       | String  | URL to which a callback should be made when the invoice is paid _(optional)_ |
 | success\_redirect\_url       | String  | URL to redirect customer after payment completes  _(optional)_      |
-| confirmations_count | Decimal | Manually require number of confirmations |
+| confirmations_count | Decimal | Manually require number of confirmations _(optional)_ |
 | callback_params     | Hash    | Additional parameters to include in callback |
 **Response**
 
@@ -578,9 +578,9 @@ This call creates a hosted page token
 | price                | Decimal | Price                                                                        |
 | quantity             | Integer | Set the quantity per checkout (if change_quantity set to true)               |
 | description          | String  | Description of an item _(optional)_  |
-| vat\_rate            | Decimal | Vat rate _(optional)_                                                        |
+| vat\_rate            | Decimal | Vat rate    _(optional)_                                               |
 
-                                                | 
+                                      
 **Response**
 
 An invoice JSON object is returned.
