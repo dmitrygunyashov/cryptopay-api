@@ -493,6 +493,7 @@ A JSON object with the following parameters is returned.
 **Example request :** `POST /api/v1/buttons`
 ```javascript  
 {
+  "id": "FR2348FD",
   "price": 10.3, 
   "currency": "EUR",
   "name": "test"
@@ -504,6 +505,7 @@ A JSON object with the following parameters is returned.
 {
   "token": "LyJ7ryzQpE6HupB7xx8R",
   "name": "test",
+  "id": "FR2348FD",
   "price": 10.3,
   "currency": "EUR",
   "created_at": 1393013086,
@@ -716,6 +718,7 @@ In this example the client API key is `76b7c5d75bececcef0b44f01275d1357`.
    "btc_address":"1RM2o9chCxS7j7sWbtB6RR8Raa1C66evs",
    "callback_params":null,
    "id":null,
+   "name":null,
    "price":"10.0",
    "currency":"GBP",
    "created_at":1393334945,
