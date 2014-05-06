@@ -125,6 +125,24 @@ If the API call was successful, the platform will answer with :
 
 ## Account
 
+### Get rate (A)
+
+This call will return current Cryptopay exchange rate
+
+**Request path :** `/api/v1/rate`
+
+**Request method :** `GET`
+
+**Request parameters**
+
+| Name                | Type    | Description                                                                  |
+|---------------------|---------|------------------------------------------------------------------------------|
+| api_key             | String  | Your cryptopay api key                                                       |
+
+**Response**
+
+A JSON object with the following attributes is returned :
+
 ### Get balance (A)
 
 This call will return the balances in all currencies.
@@ -179,6 +197,7 @@ This call creates an invoice
 | currency            | String  | Currency in which the amount is expressed, default is EUR  _(optional)_      |
 | description         | String  | Invoice description _(optional)_                                             |
 | id                  | String  | Merchant assigned order ID _(optional)_                                      |
+| name                | String  | Merchant assigned name _(optional)_                                          |
 | callback\_url       | String  | URL to which a callback should be made when the invoice is paid _(optional)_ |
 | success\_redirect\_url       | String  | URL to redirect customer after payment completes  _(optional)_      |
 | confirmations_count | Decimal | Manually require number of confirmations _(optional)_ |
@@ -197,7 +216,8 @@ An invoice JSON object is returned.
 | short\_id           | String   | Cryptopay's short id for invoice                                | 
 | callback_params     | String   | Additional parameters to include in callback                    |
 | confirmation_count  | Decimal  | Required number of confirmations before callback is fired       |
-| id                  | String   | Merchant assigned order ID                    |
+| id                  | String   | Merchant assigned order ID                                      |
+| name                | String   | Merchant assigned name _(optional)_                             |
 | price               | Decimal  | Requested amount to be credited upon payment                    |
 | currency            | String   | Currency in which the amount is expressed                       |
 | created\_at         | Datetime | Creation timestamp                                              |
@@ -210,19 +230,21 @@ An invoice JSON object is returned.
 **Example request :** `POST /api/v1/invoices`
 ```javascript
 {
-	"confirmations_count":"4",
-	"id":"Order #123",
-	"price":"10.12",
-	"currency":"GBP",
-	"description":"Here goes a sample description",
-	"callback_url":"http://example.com/cryptopay/callback",
-	"success_redirect_url":"http://example.com/thankyou.html",
-	"callback_params":[
-	{
-		"order_id":"Acme 123",
-		"customer_name":"Dmitry"
-	}
-	]
+    "api_key":"0e3434768dc029f0695d3dd12basd6205f",
+    "confirmations_count":"4",
+    "id":"Order #123",
+    "name":"An extra name",
+    "price":"10.12",
+    "currency":"GBP",
+    "description":"Here goes a sample description",
+    "callback_url":"http://example.com/cryptopay/callback",
+    "success_redirect_url":"http://example.com/thankyou.html",
+    "callback_params":[
+    {
+        "order_id":"Acme 123",
+        "customer_name":"Dmitry"
+    }
+    ]
 }
 ```
 **Example response :**
@@ -242,6 +264,7 @@ An invoice JSON object is returned.
    ],
    "confirmations_count":4,
    "id":"Order #123",
+   "name":"An extra name",
    "price":10.12,
    "currency":"GBP",
    "created_at":1393072242,
@@ -283,7 +306,8 @@ Name                | Type     | Description                                    
 | short\_id           | String   | Cryptopay's short id for invoice                                | 
 | callback_params     | String   | Additional parameters to include in callback                    |
 | confirmation_count  | Decimal  | Required number of confirmations before callback is fired       |
-| id                  | String   | Merchant assigned order ID                    |
+| id                  | String   | Merchant assigned order ID                                      |
+| name                | String   | Merchant assigned name _(optional)_                             |
 | price               | Decimal  | Requested amount to be credited upon payment                    |
 | currency            | String   | Currency in which the amount is expressed                       |
 | created\_at         | Datetime | Creation timestamp                                              |
@@ -313,6 +337,7 @@ Name                | Type     | Description                                    
    ],
    "confirmations_count":4,
    "id":"Order #123",
+   "name":"An extra name",
    "price":10.12,
    "currency":"GBP",
    "created_at":1393072242,
@@ -354,7 +379,8 @@ A JSON object of the new invoice with the following parameters is returned.
 | btc\_address        | String   | Bitcoin payment address                                         |                    
 | short\_id           | String   | Cryptopay's short id for invoice                                | 
 | callback_params     | String   | Additional parameters to include in callback                    |
-| id                  | String   | Currency in which the amount is expressed                       |
+| id                  | String   | Merchant assigned order ID                                      |
+| name                | String   | Merchant assigned name _(optional)_                             |
 | price               | Decimal  | Requested amount to be credited upon payment                    |
 | currency            | String   | Currency in which the amount is expressed                       |
 | created\_at         | Datetime | Creation timestamp                                              |
@@ -383,6 +409,7 @@ A JSON object of the new invoice with the following parameters is returned.
    ],
    "confirmations_count":4,
    "id":"Order #123",
+   "name":"An extra name",
    "price":10.12,
    "currency":"GBP",
    "created_at":1393072242,
@@ -482,6 +509,7 @@ Resource that creates a payment button token to accept bitcoin on your website.
 
 | Name                | Type    | Description                                                                  |
 |---------------------|---------|------------------------------------------------------------------------------|
+| id                  | String  | Merchant assigned order ID                                                   |
 | price               | Decimal | Requested amount to be credited upon payment                                 |
 | currency            | String  | Currency in which the amount is expressed, default is EUR _(optional)_       |
 | name                | String  | Order-related name _(optional)_                                              |
@@ -752,6 +780,7 @@ The following currencies are available :
 | BTC    | Bitcoin        |
 | EUR    | Euro           |
 | GBP    | Pound Sterling |
+| USD    | US Dollars     |
 
 
 #### Invoice statuses
