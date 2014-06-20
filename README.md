@@ -125,23 +125,31 @@ If the API call was successful, the platform will answer with :
 
 ## Account
 
-### Get rate (A)
+### Get rate
 
 This call will return current Cryptopay exchange rate
 
-**Request path :** `/api/v1/rate`
+**Request path :** `/api/v1/rates`
 
 **Request method :** `GET`
 
 **Request parameters**
 
-| Name                | Type    | Description                                                                  |
-|---------------------|---------|------------------------------------------------------------------------------|
-| api_key             | String  | Your cryptopay api key                                                       |
-
 **Response**
 
 A JSON object with the following attributes is returned :
+
+**Example request :** `GET /api/v1/rates`
+
+**Example response :**
+
+```javascript
+{
+  "USD": 581.95,
+  "EUR": 421.58,
+  "GBP": 339.7
+}
+```
 
 ### Get balance (A)
 
@@ -350,7 +358,7 @@ Name                | Type     | Description                                    
 ```
 
 
-### Requote an invoice (?)
+### Requote an invoice (A)
 
 Cryptopay's invoice is valid for 10 minutes and will expire after that. This call is used to requote this invoice — create a new invoice with exactly the same parameters.
 
@@ -363,6 +371,7 @@ Cryptopay's invoice is valid for 10 minutes and will expire after that. This cal
 
 | Name | Type | Description      |
 |------|------|------------------|
+| api_key       | String  | Your cryptopay api key |
 | uuid | UUID | Quote identifier |
 
 
@@ -422,7 +431,7 @@ A JSON object of the new invoice with the following parameters is returned.
 ```
 
 
-### List invoices (A,P)
+### List invoices (A)
 
 This call will return a paginated list of invoices for the client account.
 
