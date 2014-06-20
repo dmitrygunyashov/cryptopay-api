@@ -500,13 +500,13 @@ A JSON array of invoice objects is returned.
 }
 ```
  
-## Payment buttons and hosted checkouts
+## Payment buttons, iframes and hosted checkouts
 
 ### Payment buttons
 
 Payment buttons can be used to accept bitcoin for an individual item or to integrate with your existing shopping cart solution. For example, you could create a new payment button for each shopping cart on your website, setting the total and order number in the button at checkout.
 
-### API: Create button
+### API: Create button (A)
 
 Resource that creates a payment button token to accept bitcoin on your website.
 
@@ -584,6 +584,84 @@ This can be used, for example, to redirect the user to a 'confirmation' page whe
 
 It's important to note that the this event does not guarantee a payment has arrived successfully (any user could trigger this javascript event on the page). It is just a convenient way to move to the next step in your checkout. You should always verify the payment was received via the callback to your site
 
+### Payment iframes
+
+Payment ifames can be used to accept bitcoin for an individual item without customers being redirected to an external site. For example, you could create a new ifame for each shopping cart on your website, setting the total and order number in the iframe at checkout.
+
+### API: Create an iframe (A)
+
+Resource that creates a payment button token to accept bitcoin on your website.
+
+**Request path :** `/api/v1/iframes`
+
+**Request method :** `POST`
+
+**Request parameters**
+
+| Name                | Type    | Description                                                                  |
+|---------------------|---------|------------------------------------------------------------------------------|
+| id                  | String  | Merchant assigned order ID                                                   |
+| price               | Decimal | Requested amount to be credited upon payment                                 |
+| currency            | String  | Currency in which the amount is expressed, default is EUR _(optional)_       |
+| name                | String  | Order-related name _(optional)_                                              |
+
+**Response**
+
+A JSON object with the following parameters is returned.
+
+**Example request :** `POST /api/v1/iframes`
+```javascript  
+{
+  "id": "FR2348FD",
+  "price": 10.3, 
+  "currency": "EUR",
+  "name": "test"
+}
+```
+
+**Example response :**
+```javascript    
+{
+  "token": "LyJ7ryzQpE6HupB7xx8R",
+  "name": "test",
+  "id": "FR2348FD",
+  "price": 10.3,
+  "currency": "EUR",
+  "created_at": 1393013086,
+  "callback_url": "http://yourawesomesite.com/cryptopay_handler"
+}
+```
+
+Sample embed code
+
+The iframe API endpoint will return a `token` parameter, which you can use to generate the embed HTML (described below).
+
+```html
+      <div style="max-width: 605px">
+      <iframe width="100%" height="300px" scrolling="no" frameborder="no" allowtransparency="true" src="https://cryptopay.me/iframes/TOKEN">
+      </iframe></div>
+```
+
+### Customizing
+
+You can customise the iframe however you like. For example, you can add a <border>, <box-shadow> or any other styling.
+
+
+### Events handle
+The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
+
+If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context. 
+
+```javascript
+<script type="text/javascript">
+window.addEventListener('cryptopay-invoice', function(event){
+  console.log(event.detail);
+}, false);
+</script>
+```
+This can be used, for example, to redirect the user to a 'confirmation' page where you wait for the callback to reach your site. You can obtain invoice parameters and it's status from `event.detail` object.
+
+It's important to note that the this event does not guarantee a payment has arrived successfully (any user could trigger this javascript event on the page). It is just a convenient way to move to the next step in your checkout. You should always verify the payment via the callback to your site
 
 
 ## Hosted page
@@ -591,7 +669,7 @@ It's important to note that the this event does not guarantee a payment has arri
 Hosted pages can be used to accept bitcoin for an individual item or to integrate with your existing shopping cart solution. For example, you could create a new hosted page for each shopping cart on your website, setting the total and order number in the button at checkout. Your customer will be redirected to Cryptopay's page in order to complete payment.
 
 
-### API: Create hosted
+### API: Create hosted page (A)
 
 This call creates a hosted page token
 
@@ -726,7 +804,7 @@ The best way to track payments is to use Cryptopay's [callback](#payment-callbac
 
 ### Payment callbacks
 
-When a payment is received for an invoice the backend will perform an HTTP POST to the URL given as `callback_url`. The content-type for the request will be `application/json`.
+When Cryptopay gets the payment, the backend will perform an HTTPS POST to the URL given as `callback_url`. The Content-Type for the request will be `application/json`.
 
 The parameters sent are the same as the ones returned by a [view invoice](#view-an-invoice-a) with an extra `validation_hash` parameter.
 
@@ -738,7 +816,7 @@ With the default of 25 attempts, the last retry will be 20 days later, with the 
 
 #### Validation hash
 
-A `validation_hash` parameter is added to all callback requests. Its purpose is to authenticate the call from the backend to the callback URL, this signature **must** be properly checked by the receiving server in order to ensure that the request is legitimate and hasn't been tampered with.
+A `validation_hash` parameter is added to all callback requests. Its purpose is to authenticate the call from Cryptopay to the callback URL. This signature **must** be properly checked by the receiving server in order to ensure that the request is legitimate and hasn't been tampered with.
 
 The signature is computed by concatenating the Mechant API Key with invoice UUID, price in cents and currency ISO code and applying a SHA256 hash function to it. "#{merchant.api_key}_#{uuid}_#{price_cents}#{price_currency}" 
 
@@ -796,17 +874,8 @@ The following currencies are available :
 
 | State          | Description                                     |
 |----------------|-------------------------------------------------|
-| pending        | The invoice is pending payment                  |
-| paid           | The invoice has a confirmed payment             |
-| settled        | The invoice has a confirmed and credited to account        |
-| timeout        | The invoice has expired                         |
+| Pending        | The invoice is pending payment                  |
+| Paid           | The invoice has a confirmed payment             |
+| Confirmed        | The invoice has a confirmed and credited to account        |
+| Timeout        | The invoice has expired                         |
 
-
-
-# Left TODO
-
- 
-## Misc
-
- * GET /api/v1/rate
- 
