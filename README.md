@@ -719,7 +719,7 @@ An invoice JSON object is returned.
    "collect_address":true,
    "success_redirect_url":"http://example.com/success.html",
    "callback_url":"http://requestb.in/13lffoc1",
-   "form":"Date of Birth:",
+   "form":["Date of Birth:"],
    "items":[
       {
          "name":"Test item 1",
@@ -879,3 +879,12 @@ The following currencies are available :
 | Confirmed        | The invoice has a confirmed and credited to account        |
 | Timeout        | The invoice has expired                         |
 
+
+
+# Left TODO
+
+ 
+## Misc
+
+ * GET /api/v1/rate
+ 
