@@ -34,9 +34,9 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
      - [Buttons customizing](#buttons-customizing)
      - [Button events handle](#button-events-handle)
   - [Payment iframes](#payment-iframes)
-     - [Create iframe (A)](#create-iframe-a)
-     - [iFrame customizing](#customizing)
-     - [iFrame events handle](#events-hadle)
+     - [Create an iframe (A)](#create-an-iframe-a)
+     - [iFrame customizing](#iframes-customizing)
+     - [iFrame events handle](#iframes-events-hadle)
 <p></p>
 - [**Appendix**](#appendix)
    - [Codes and types tables](#codes-and-types-tables)
