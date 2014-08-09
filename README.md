@@ -812,7 +812,7 @@ Cryptopay IPN is expecting to get a 200 OK response from you. If it doesn't get 
 
 **Callback Processing example, in PHP**
 ```PHP  
-//Retrieve the data 
+//Retrieving the data 
 $json=file_get_contents('php://input');
 //Parsing the Json..
 $obj=json_decode($json);
