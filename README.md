@@ -597,7 +597,7 @@ The button API will return a `token` parameter, which you can use to generate th
 It's worth noting that generating multiple buttons this way is only necessary if you want to set prices dynamically. If you only have a few items with the same price you can generate buttons manually and modify the `data-cryptopay-token` attribute to change which value is returned in the callback.
 
 
-### Customizing
+### Buttons customizing
 
 You can customise the button however you like. You need to make sure to include `<script src="https://cryptopay.me/assets/button.js"></script>` and that your element has `data-cryptopay-token` parameter with `token`.
 
