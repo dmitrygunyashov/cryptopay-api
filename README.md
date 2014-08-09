@@ -810,6 +810,18 @@ The parameters sent are the same as the ones returned by a [view invoice](#view-
 
 Cryptopay IPN is expecting to get a 200 OK response from you. If it doesn't get 200 OK — it will keep posting callbacks on the following schedule.
 
+**Callback Processing example, in PHP**
+```PHP  
+//Retrieve the data 
+$json=file_get_contents('php://input');
+//Parsing the Json..
+$obj=json_decode($json);
+//Converting it into an array. You can now fetch $Callback["btc_price"] by example
+$Callback = (array) $obj;
+//HTTP response
+header('HTTP/1.1 200 OK');
+```
+
 On failure, the job is scheduled again in 5 seconds + N ** 4, where N is the number of retries.
 
 With the default of 25 attempts, the last retry will be 20 days later, with the last interval being almost 100 hours.
@@ -818,7 +830,7 @@ With the default of 25 attempts, the last retry will be 20 days later, with the 
 
 A `validation_hash` parameter is added to all callback requests. Its purpose is to authenticate the call from Cryptopay to the callback URL. This signature **must** be properly checked by the receiving server in order to ensure that the request is legitimate and hasn't been tampered with.
 
-The signature is computed by concatenating the Mechant API Key with invoice UUID, price in cents and currency ISO code and applying a SHA256 hash function to it. "#{merchant.api_key}_#{uuid}_#{price_cents}#{price_currency}" 
+The signature is computed by concatenating the Mechant API Key with invoice UUID, price in cents (multiply the callback `price` by 100) and currency ISO code and applying a SHA1 hash function to it. You must use the following pattern: "#{merchant.api\_key}\_#{uuid}\_#{price\_cents}#{price_currency}" 
 
 **Example signed callback request :**
 
@@ -850,7 +862,8 @@ Signature will be computed as: `76b7c5d75bececcef0b44f01275d1357_248e5bb8-486c-4
 
 SHA1 hash: `715d7f713372e91765078d607416b69b1d6a8795`
 
-In Ruby this signature can be easily checked by doing `Digest::SHA1.hexdigest(data)` where `data` is the `#{merchant.api_key}_#{uuid}_#{price_cents}#{price_currency}`
+This signature can be easily checked by doing `Digest::SHA1.hexdigest(data)` (Ruby) or `hash('sha1', $data);` (PHP) where `data` is the `#{merchant.api_key}_#{uuid}_#{price_cents}#{price_currency}`
+
 
 
 
