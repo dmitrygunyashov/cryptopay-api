@@ -31,14 +31,12 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
      - [List invoices (A,P)](#list-invoices-ap)
   - [Payment buttons](#payment-buttons)
      - [Create button (A)](#create-button-a)
-     - [Customizing](#customizing)
-     - [Events handle](#events-hadle)
-     - [Payment callbacks](#payment-callbacks)
+     - [Buttons customizing](#button-customizing)
+     - [Button events handle](#button-events-hadle)
   - [Payment iframes](#payment-iframes)
      - [Create iframe (A)](#create-iframe-a)
-     - [Customizing](#customizing)
-     - [Events handle](#events-hadle)
-     - [Payment callbacks](#payment-callbacks)
+     - [iFrame customizing](#customizing)
+     - [iFrame events handle](#events-hadle)
 <p></p>
 - [**Appendix**](#appendix)
    - [Codes and types tables](#codes-and-types-tables)
@@ -604,7 +602,7 @@ It's worth noting that generating multiple buttons this way is only necessary if
 You can customise the button however you like. You need to make sure to include `<script src="https://cryptopay.me/assets/button.js"></script>` and that your element has `data-cryptopay-token` parameter with `token`.
 
 
-### Events handle
+### Button events handle
 The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
 
 If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context.
@@ -678,12 +676,12 @@ The iframe API endpoint will return a `token` parameter, which you can use to ge
       </iframe></div>
 ```
 
-### Customizing
+### iFrames customizing
 
 You can customise the iframe however you like. For example, you can add a <border>, <box-shadow> or any other styling.
 
 
-### Events handle
+### iFrames events handle
 The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
 
 If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context.
