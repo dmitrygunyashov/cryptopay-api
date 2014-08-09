@@ -7,7 +7,7 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
 ## Table of contents
 
 - [**General API description**](#general-api-description)
-<p></p> 
+<p></p>
   - [Authentication](#authentication)
   - [Base URL](#base-url)
   - [Formats and required HTTP request headers](#formats-and-required-http-request-headers)
@@ -21,6 +21,8 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
 - [**API Calls**](#api-calls)
 <p></p>
   - [Account](#account)
+     - [Get Cryptopay rate](#get-cryptopay-rate)
+     - [Get Cryptopay ASK rate](#get-cryptopay-ask-rate)
      - [Get balances (A)](#get-balances-a)
   - [Invoices](#invoices)
      - [Create an invoice (A)](#create-an-invoice-a)
@@ -77,16 +79,16 @@ Calls that return paginated collections will add a `Pagination` HTTP header to t
 **Pagination header example**
 ```javascript
     {
-      
+
       // Total number of items in the collection
       "total":3,
-      
+
       // Current page number
       "page":1,
-      
+
       // Total amount of available pages
       "total_pages":1,
-      
+
     }
 ```
 ### Controlling pagination
@@ -125,7 +127,7 @@ If the API call was successful, the platform will answer with :
 
 ## Account
 
-### Get rate
+### Get Cryptopay rate
 
 This call will return current Cryptopay exchange rate
 
@@ -151,6 +153,32 @@ A JSON object with the following attributes is returned :
 }
 ```
 
+### Get Cryptopay ASK rate
+
+This call will return current Cryptopay exchange rate
+
+**Request path :** `/api/v1/ask_rates`
+
+**Request method :** `GET`
+
+**Request parameters**
+
+**Response**
+
+A JSON object with the following attributes is returned :
+
+**Example request :** `GET /api/v1/ask_rates`
+
+**Example response :**
+
+```javascript
+{
+  "USD": 591.95,
+  "EUR": 431.58,
+  "GBP": 359.7
+}
+```
+
 ### Get balance (A)
 
 This call will return the balances in all currencies.
@@ -160,7 +188,7 @@ This call will return the balances in all currencies.
 **Request method :** `GET`
 
 **Request parameters**
- 
+
 | Name                | Type    | Description                                                                  |
 |---------------------|---------|------------------------------------------------------------------------------|
 | api_key             | String  | Your cryptopay api key                                                       |
@@ -169,7 +197,7 @@ This call will return the balances in all currencies.
 
 A JSON object with the following attributes is returned :
 
- 
+
 **Example request :** `GET /api/v1/balance`
 
 **Example response :**
@@ -214,14 +242,14 @@ This call creates an invoice
 
 An invoice JSON object is returned.
 
- Name                | Type     | Description                                                     |
+| Name                | Type     | Description                                                     |
 |---------------------|----------|-----------------------------------------------------------------|
 | uuid                | UUID     | Invoice identifier                                              |
-| description         | String   | Invoice Description                                             | 
-| status              | String   | Invoice status (Invoice state _(see appendix)_                  |    
+| description         | String   | Invoice Description                                             |
+| status              | String   | Invoice status (Invoice state _(see appendix)_                  |
 | btc\_price          | Decimal  | Payable amount expressed in BTC                                 |
-| btc\_address        | String   | Bitcoin payment address                                         |                 
-| short\_id           | String   | Cryptopay's short id for invoice                                | 
+| btc\_address        | String   | Bitcoin payment address                                         |
+| short\_id           | String   | Cryptopay's short id for invoice                                |
 | callback_params     | String   | Additional parameters to include in callback                    |
 | confirmation_count  | Decimal  | Required number of confirmations before callback is fired       |
 | id                  | String   | Merchant assigned order ID                                      |
@@ -256,7 +284,7 @@ An invoice JSON object is returned.
 }
 ```
 **Example response :**
-```javascript    
+```javascript
 {
    "uuid":"88b47b20-6227-4161-b0e0-44e06bef2b67",
    "description":"Here goes a sample description",
@@ -286,7 +314,7 @@ An invoice JSON object is returned.
 
 ### View an invoice (A)
 
-It is the same call as the above one, except this call will return a subset of the JSON object representing an invoice. 
+It is the same call as the above one, except this call will return a subset of the JSON object representing an invoice.
 
 **Request path :** `/api/v1/invoices/{uuid}`
 
@@ -304,32 +332,32 @@ It is the same call as the above one, except this call will return a subset of t
 
 A JSON object with the following parameters is returned.
 
-Name                | Type     | Description                                                     |
-|---------------------|----------|-----------------------------------------------------------------|
-| uuid                | UUID     | Invoice identifier                                              |
-| description         | String   | Invoice Description                                             | 
-| status              | String   | Invoice status (Invoice state _(see appendix)_                  |    
-| btc\_price          | Decimal  | Payable amount expressed in BTC                                 |
-| btc\_address        | String   | Bitcoin payment address                                         |                 
-| short\_id           | String   | Cryptopay's short id for invoice                                | 
-| callback_params     | String   | Additional parameters to include in callback                    |
-| confirmation_count  | Decimal  | Required number of confirmations before callback is fired       |
-| id                  | String   | Merchant assigned order ID                                      |
-| name                | String   | Merchant assigned name _(optional)_                             |
-| price               | Decimal  | Requested amount to be credited upon payment                    |
-| currency            | String   | Currency in which the amount is expressed                       |
-| created\_at         | Datetime | Creation timestamp                                              |
-| valid\_till         | Datetime | Expiration timestamp                                            |
-| url                 | String   | The URL at which this invoice is publicly visible and payable   |
-| bitcoin_uri         | String   | The URI to create a QR-code with payment information    |
-| callback\_url       | String  | URL to which a callback should be made when the invoice is paid  |
-| success\_redirect\_url       | String  | URL to redirect customer after payment completes |
+| Name                   | Type     | Description                                                     |
+|------------------------|----------|-----------------------------------------------------------------|
+| uuid                   | UUID     | Invoice identifier                                              |
+| description            | String   | Invoice Description                                             |
+| status                 | String   | Invoice status (Invoice state _(see appendix)_                  |
+| btc\_price             | Decimal  | Payable amount expressed in BTC                                 |
+| btc\_address           | String   | Bitcoin payment address                                         |
+| short\_id              | String   | Cryptopay's short id for invoice                                |
+| callback_params        | String   | Additional parameters to include in callback                    |
+| confirmation_count     | Decimal  | Required number of confirmations before callback is fired       |
+| id                     | String   | Merchant assigned order ID                                      |
+| name                   | String   | Merchant assigned name _(optional)_                             |
+| price                  | Decimal  | Requested amount to be credited upon payment                    |
+| currency               | String   | Currency in which the amount is expressed                       |
+| created\_at            | Datetime | Creation timestamp                                              |
+| valid\_till            | Datetime | Expiration timestamp                                            |
+| url                    | String   | The URL at which this invoice is publicly visible and payable   |
+| bitcoin_uri            | String   | The URI to create a QR-code with payment information            |
+| callback\_url          | String   | URL to which a callback should be made when the invoice is paid |
+| success\_redirect\_url | String   | URL to redirect customer after payment completes                |
 
 **Example request :** `GET /api/v1/invoices/70c7936b-f8ce-443a-8338-3762de0a1e92`
 
 **Example response :**
 
-```javascript    
+```javascript
 {
    "uuid":"88b47b20-6227-4161-b0e0-44e06bef2b67",
    "description":"Here goes a sample description",
@@ -382,11 +410,11 @@ A JSON object of the new invoice with the following parameters is returned.
 | Name                | Type     | Description                                                     |
 |---------------------|----------|-----------------------------------------------------------------|
 | uuid                | UUID     | Invoice identifier                                              |
-| description         | String   | Invoice Description                                             | 
-| status              | String   | Invoice status (Invoice state _(see appendix)_                  |    
+| description         | String   | Invoice Description                                             |
+| status              | String   | Invoice status (Invoice state _(see appendix)_                  |
 | btc\_price          | Decimal  | Payable amount expressed in BTC                                 |
-| btc\_address        | String   | Bitcoin payment address                                         |                    
-| short\_id           | String   | Cryptopay's short id for invoice                                | 
+| btc\_address        | String   | Bitcoin payment address                                         |
+| short\_id           | String   | Cryptopay's short id for invoice                                |
 | callback_params     | String   | Additional parameters to include in callback                    |
 | id                  | String   | Merchant assigned order ID                                      |
 | name                | String   | Merchant assigned name _(optional)_                             |
@@ -402,7 +430,7 @@ A JSON object of the new invoice with the following parameters is returned.
 
 **Example response :**
 
-```javascript    
+```javascript
 {
    "uuid":"88b47b20-6227-4161-b0e0-44e06bef2b67",
    "description":"Here goes a sample description",
@@ -499,7 +527,7 @@ A JSON array of invoice objects is returned.
    ]
 }
 ```
- 
+
 ## Payment buttons, iframes and hosted checkouts
 
 ### Payment buttons
@@ -531,14 +559,14 @@ A JSON object with the following parameters is returned.
 ```javascript  
 {
   "id": "FR2348FD",
-  "price": 10.3, 
+  "price": 10.3,
   "currency": "EUR",
   "name": "test"
 }
 ```
 
 **Example response :**
-```javascript    
+```javascript
 {
   "token": "LyJ7ryzQpE6HupB7xx8R",
   "name": "test",
@@ -571,7 +599,7 @@ You can customise the button however you like. You need to make sure to include 
 ### Events handle
 The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
 
-If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context. 
+If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context.
 
 ```javascript
 <script type="text/javascript">
@@ -613,14 +641,14 @@ A JSON object with the following parameters is returned.
 ```javascript  
 {
   "id": "FR2348FD",
-  "price": 10.3, 
+  "price": 10.3,
   "currency": "EUR",
   "name": "test"
 }
 ```
 
 **Example response :**
-```javascript    
+```javascript
 {
   "token": "LyJ7ryzQpE6HupB7xx8R",
   "name": "test",
@@ -650,7 +678,7 @@ You can customise the iframe however you like. For example, you can add a <borde
 ### Events handle
 The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
 
-If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context. 
+If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context.
 
 ```javascript
 <script type="text/javascript">
@@ -703,7 +731,7 @@ This call creates a hosted page token
 | description          | String  | Description of an item _(optional)_  |
 | vat\_rate            | Decimal | Vat rate    _(optional)_                                               |
 
-                                      
+
 **Response**
 
 An invoice JSON object is returned.
@@ -740,7 +768,7 @@ An invoice JSON object is returned.
 ```
 
 **Example response :**
-```javascript    
+```javascript
 {
    "token":"ys4UoFQfczySKY7VwS17",
    "success_redirect_url":"http://example.com/success.html",
@@ -780,7 +808,7 @@ An invoice JSON object is returned.
 ```
 
 
-### Allow customers to change quanity of items at the hosted checkout. 
+### Allow customers to change quanity of items at the hosted checkout.
 
 Using hosted checkout facility you can invoice for several items at once. If you want your customers to be able to choose the quantity of items they would like to purchase, you need to pass `change_quantity` parameter with value `true`
 
@@ -816,7 +844,7 @@ With the default of 25 attempts, the last retry will be 20 days later, with the 
 
 **Callback Processing example, in PHP**
 ```PHP  
-//Retrieving the data 
+//Retrieving the data
 $json=file_get_contents('php://input');
 //Parsing the Json..
 $obj=json_decode($json);
@@ -830,7 +858,7 @@ header('HTTP/1.1 200 OK');
 
 A `validation_hash` parameter is added to all callback requests. Its purpose is to authenticate the call from Cryptopay to the callback URL. This signature **must** be properly checked by the receiving server in order to ensure that the request is legitimate and hasn't been tampered with.
 
-The signature is computed by concatenating the Mechant API Key with invoice UUID, price in cents (multiply the callback `price` by 100) and currency ISO code and applying a SHA1 hash function to it. You must use the following pattern: "#{merchant.api\_key}\_#{uuid}\_#{price\_cents}#{price_currency}" 
+The signature is computed by concatenating the Mechant API Key with invoice UUID, price in cents (multiply the callback `price` by 100) and currency ISO code and applying a SHA1 hash function to it. You must use the following pattern: "#{merchant.api\_key}\_#{uuid}\_#{price\_cents}#{price_currency}"
 
 **Example signed callback request :**
 
@@ -897,8 +925,7 @@ The following currencies are available :
 
 # Left TODO
 
- 
+
 ## Misc
 
  * GET /api/v1/rate
- 
