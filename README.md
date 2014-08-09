@@ -32,11 +32,17 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
   - [Payment buttons](#payment-buttons)
      - [Create button (A)](#create-button-a)
      - [Buttons customizing](#buttons-customizing)
-     - [Button events handle](#button-events-handle)
+     - [Button events handle](#button-events-handling)
   - [Payment iframes](#payment-iframes)
      - [Create an iframe (A)](#create-an-iframe-a)
      - [iFrame customizing](#iframes-customizing)
-     - [iFrame events handle](#iframes-events-handle)
+     - [iFrame events handle](#iframes-events-handling)
+  - [Hosted pages](#hosted-pages)
+     - [Create hosted page (A)](#create-hosted-page-a)]
+     - [Hosted page events handling](#hosted-page-events-handling)
+  - [Cryptopay payment callbacks](#cryptopay-payment-callbacks)
+     - [Callback validation](#callback-validation)
+
 <p></p>
 - [**Appendix**](#appendix)
    - [Codes and types tables](#codes-and-types-tables)
@@ -66,7 +72,7 @@ The base URL for all calls is `https://cryptopay.me/api/v1/`. A complete URL wou
 
 ## Formats and required HTTP request headers
 
-The API will answer with JSON or empty responses. It expects parameters to be either passed in JSON with the correct `Content-Type: application/json` being set
+The API will answer with JSON or empty responses. It expects parameters to be passed in JSON with the correct `Content-Type: application/json` being set
 
 ## Rate-limiting
 
@@ -99,14 +105,14 @@ Calls that return paginated collections will add a `Pagination` HTTP header to t
 ```
 ### Controlling pagination
 
-Optional pagination parameters may be passed in the request URI in order to control the way the collection gets paginated. If parameters are incorrect a HTTP 400 Bad request status is returned along with an empty body.
+Optional pagination parameters may be passed in the request URI in order to control the way the collection gets paginated. If parameters are incorrect — HTTP 400 Bad request status will be returned along with an empty body.
 
 | Parameter  | Default |	Acceptable values      |
 |-----------|---------|--------------------------------|
-| page      | 1       | Positive integer >0            |
-| per_page  | 20      | Positive integer >=1  |
+| page      | 1       | Positive integer > 0            |
+| per_page  | 20      | Positive integer >= 1  |
 | from      | optional | Unix timestamp created_at > {from} |
-| to      | optional | Unix timestamp created_at < {to} |
+| to        | optional | Unix timestamp created_at < {to} |
 
 
 
@@ -602,7 +608,7 @@ It's worth noting that generating multiple buttons this way is only necessary if
 You can customise the button however you like. You need to make sure to include `<script src="https://cryptopay.me/assets/button.js"></script>` and that your element has `data-cryptopay-token` parameter with `token`.
 
 
-### Button events handle
+### Button events handling
 The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
 
 If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context.
@@ -681,7 +687,7 @@ The iframe API endpoint will return a `token` parameter, which you can use to ge
 You can customise the iframe however you like. For example, you can add a <border>, <box-shadow> or any other styling.
 
 
-### iFrames events handle
+### iFrames events handling
 The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
 
 If you would like to implement custom event tracking logic, you can track a `cryptopay-invoice` javascript event in `window` context.
@@ -728,7 +734,7 @@ This call creates a hosted page token
 | success\_redirect\_url       | String  | URL to redirect customer after payment completes  _(optional)_       |
 
 
-#### Item attribute
+#### Hosted page item attribute
 | Name                 | Type    | Description                                                                  |
 |----------------------|---------|------------------------------------------------------------------------------|
 | name                 | String  | Currency in which the amount is expressed                                    |
@@ -832,23 +838,24 @@ You might want to collect information from your customers during the checkout pr
 
 In order to collect custom information you can use `form` parameter, for example `form = ['Date of Birth:', 'Tax ID']`
 
-### Events handle
+### Hosted page events handling
 
 The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
 
-## Payment callbacks
+## Cryptopay payment callbacks
 
-When Cryptopay gets the payment, the backend will perform an HTTPS POST to the URL given as `callback_url`. The Content-Type for the request will be `application/json`.
+When Cryptopay receives the payment, we will perform a HTTPS POST to the URL given as `callback_url`. The Content-Type for the request will be `application/json`.
 
 The parameters sent are the same as the ones returned by a [view invoice](#view-an-invoice-a) with an extra `validation_hash` parameter.
 
 Cryptopay IPN is expecting to get a 200 OK response from you. If it doesn't get 200 OK — it will keep posting callbacks on the following schedule.
 
-On failure, the job is scheduled again in 5 seconds + N ** 4, where N is the number of retries.
+Cryptopay callback is scheduled  in 5 seconds + N ** 4, where N is the number of retries.
 
 With the default of 25 attempts, the last retry will be 20 days later, with the last interval being almost 100 hours.
 
-**Callback Processing example, in PHP**
+**Callback handling example, PHP**
+
 ```PHP  
 //Retrieving the data
 $json=file_get_contents('php://input');
@@ -860,11 +867,11 @@ $Callback = (array) $obj;
 header('HTTP/1.1 200 OK');
 ```
 
-### Validation hash
+### Callback validation
 
 A `validation_hash` parameter is added to all callback requests. Its purpose is to authenticate the call from Cryptopay to the callback URL. This signature **must** be properly checked by the receiving server in order to ensure that the request is legitimate and hasn't been tampered with.
 
-The signature is computed by concatenating the Mechant API Key with invoice UUID, price in cents (multiply the callback `price` by 100) and currency ISO code and applying a SHA1 hash function to it. You must use the following pattern: "#{merchant.api\_key}\_#{uuid}\_#{price\_cents}#{price_currency}"
+The signature is computed by concatenating the Merchant API Key with an invoice UUID, price in cents (multiply of callback `price` by 100) and currency ISO code and applying a SHA1 hash function to it. You must use the following pattern: "#{merchant.api\_key}\_#{uuid}\_#{price\_cents}#{price_currency}"
 
 **Example signed callback request :**
 
@@ -896,7 +903,7 @@ Signature will be computed as: `76b7c5d75bececcef0b44f01275d1357_248e5bb8-486c-4
 
 SHA1 hash: `715d7f713372e91765078d607416b69b1d6a8795`
 
-This signature can be easily checked by doing `Digest::SHA1.hexdigest(data)` (Ruby) or `hash('sha1', $data);` (PHP) where `data` is the `#{merchant.api_key}_#{uuid}_#{price_cents}#{price_currency}`
+This signature can be easily by doing `Digest::SHA1.hexdigest(data)` (Ruby) or `hash('sha1', $data);` (PHP) where `data` is the `#{merchant.api_key}_#{uuid}_#{price_cents}#{price_currency}`
 
 
 
