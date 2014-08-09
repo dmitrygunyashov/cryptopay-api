@@ -10,10 +10,10 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
 <p></p>
   - [Authentication](#authentication)
   - [Base URL](#base-url)
-  - [Formats and required HTTP request headers](#formats-and-required-http-request-headers)
+  - [Formats and required HTTP request headers](#formats-and-required-https-request-headers)
   - [Rate-limiting](#rate-limiting)
   - [Pagination](#pagination)
-    - [HTTP response header](#http-response-header)
+    - [HTTP response header](#https-response-header)
     - [Controlling pagination](#controlling-pagination)
   - [Error handling](#error-handling)
   - [Successful calls](#successful-calls)
@@ -66,9 +66,9 @@ A complete URL with API key authentication would look like this `https://cryptop
 
 The base URL for all calls is `https://cryptopay.me/api/v1/`. A complete URL would look like this `https://cryptopay.me/api/v1/invoice/3a7bc1b2-9b7e-4dc3-9ffc-b3c08962ff4d`.
 
-## Formats and required HTTP request headers
+## Formats and required HTTPS request headers
 
-The API will answer with JSON or empty responses. It expects parameters to be passed in JSON with the correct `Content-Type: application/json` being set
+Cryptopay API will respond with JSON payload. It expects parameters to be passed in JSON with the correct `Content-Type: application/json` being set.
 
 ## Rate-limiting
 
@@ -80,7 +80,7 @@ Some API calls returning collections may be paginated. In this case the call des
 
 Calls that return paginated data are marked with "P" in the call description title.
 
-### HTTP response header
+### HTTPS response header
 
 Calls that return paginated collections will add a `Pagination` HTTP header to the response. It will contain a pagination meta-data JSON object.
 
@@ -118,17 +118,17 @@ Datetime values will be returned as Unix timestamps, for example: `1392211599`
 
 ## Error handling
 
-Whenever an error is encountered, the answer to a JSON API call will have :
+Whenever an error is encountered, Cryptopay response will include:
 
  * An HTTP 422 status (Unprocessable entity) or HTTP 400 (Bad request), HTTP 401 (Unauthorized)
- * A JSON array of localized error messages as body
+ * A JSON array of localised error messages as body
 
 ## Successful calls
 
-If the API call was successful, the platform will answer with :
+If API call was successful, the platform will respond with :
 
- * An HTTP 200 status (OK) or HTTP 201 (Created),
- * A JSON representation of the entity being created or updated if relevant
+ * HTTP 200 status (OK) or HTTP 201 (Created),
+ * JSON representation of the entity being created or updated if relevant
 
 
 # API Calls
@@ -163,7 +163,7 @@ A JSON object with the following attributes is returned :
 
 ### Get Cryptopay ASK rate
 
-This call will return current Cryptopay exchange rate
+This call will return current Cryptopay ASK exchange rate
 
 **Request path :** `/api/v1/ask_rates`
 
@@ -189,7 +189,7 @@ A JSON object with the following attributes is returned :
 
 ### Get balance (A)
 
-This call will return the balances in all currencies.
+This call will return all the balances of Cryptopay account .
 
 **Request path :** `/api/v1/balance`
 
@@ -220,13 +220,13 @@ A JSON object with the following attributes is returned :
 
 ## Invoices
 
-Invoices are requests for payment. They can be expressed either in EUR or GBP. They all get a unique Bitcoin payment address assigned and a Bitcoin amount calculated from the requested currency amount.
+Invoices are requests for payment. They can be expressed either in BTC, GBP, EUR or USD. They all get a unique Bitcoin payment address assigned and a Bitcoin amount calculated from the requested currency amount.
 
 Payment can be made by sending the `btc_price` amount of Bitcoins to the `btc_address` address. The invoice payment will trigger a `POST`to the `callback_url`.
 
 ### Create an invoice (A)
 
-This call creates an invoice
+This call creates an invoice.
 
 **Request path :** `/api/v1/invoices`
 
@@ -236,7 +236,7 @@ This call creates an invoice
 
 | Name                  | Type    | Description                                                                  |
 |-----------------------|---------|------------------------------------------------------------------------------|
-| api_key               | String  | Your Cryptopay api key                                                       |
+| api_key               | String  | Your Cryptopay API key                                                       |
 | price                 | Decimal | Requested amount to be credited upon payment                                 |
 | currency              | String  | Currency in which the amount is expressed, default is EUR  _(optional)_      |
 | description           | String  | Invoice description _(optional)_                                             |
@@ -322,7 +322,7 @@ An invoice JSON object is returned.
 
 ### View an invoice (A)
 
-It is the same call as the above one, except this call will return a subset of the JSON object representing an invoice.
+This call returns the particular invoice.
 
 **Request path :** `/api/v1/invoices/#{uuid}`
 
@@ -332,7 +332,7 @@ It is the same call as the above one, except this call will return a subset of t
 
 | Name 		| Type 	  | Description      	     |
 |---------|---------|------------------------|
-| api_key | String  | Your Cryptopay api key |
+| api_key | String  | Your Cryptopay API key |
 | uuid 		| UUID    | Invoice identifier     |
 
 
@@ -396,10 +396,10 @@ A JSON object with the following parameters is returned.
 
 ### Requote an invoice (A)
 
-Cryptopay's invoice is valid for 10 minutes and will expire after that. This call is used to requote this invoice — create a new invoice with exactly the same parameters.
+Cryptopay's invoice is valid for 10 minutes and will expire after that. This call is used to requote the invoice — create a new invoice with exactly the same parameters.
 
 
-**Request path :** `/api/v1/invoices/{uuid}`
+**Request path :** `/api/v1/invoices/#{uuid}`
 
 **Request method :** `PUT`
 
@@ -407,7 +407,7 @@ Cryptopay's invoice is valid for 10 minutes and will expire after that. This cal
 
 | Name 		| Type 	  | Description      	     |
 |---------|---------|------------------------|
-| api_key | String  | Your Cryptopay api key |
+| api_key | String  | Your Cryptopay API key |
 | uuid 		| UUID    | Invoice identifier     |
 
 
@@ -419,7 +419,7 @@ A JSON object of the new invoice with the following parameters is returned.
 |-----------------------|----------|-----------------------------------------------------------------|
 | uuid                  | UUID     | Invoice identifier                                              |
 | description           | String   | Invoice description                                             |
-| status                | String   | Invoice status (Invoice state _(see appendix)_                  |
+| status                | String   | Invoice status (Invoice state _(see appendix(#appendix))_                  |
 | btc\_price            | Decimal  | Amount payable, expressed in BTC                                |
 | btc\_address          | String   | Bitcoin payment address                                         |
 | short\_id             | String   | Cryptopay's short id for invoice                                |
