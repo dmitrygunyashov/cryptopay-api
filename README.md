@@ -810,6 +810,10 @@ The parameters sent are the same as the ones returned by a [view invoice](#view-
 
 Cryptopay IPN is expecting to get a 200 OK response from you. If it doesn't get 200 OK — it will keep posting callbacks on the following schedule.
 
+On failure, the job is scheduled again in 5 seconds + N ** 4, where N is the number of retries.
+
+With the default of 25 attempts, the last retry will be 20 days later, with the last interval being almost 100 hours.
+
 **Callback Processing example, in PHP**
 ```PHP  
 //Retrieving the data 
@@ -821,10 +825,6 @@ $Callback = (array) $obj;
 //HTTP response
 header('HTTP/1.1 200 OK');
 ```
-
-On failure, the job is scheduled again in 5 seconds + N ** 4, where N is the number of retries.
-
-With the default of 25 attempts, the last retry will be 20 days later, with the last interval being almost 100 hours.
 
 #### Validation hash
 
@@ -885,12 +885,13 @@ The following currencies are available :
 
 #### Invoice statuses
 
-| State          | Description                                     |
-|----------------|-------------------------------------------------|
-| Pending        | The invoice is pending payment                  |
-| Paid           | The invoice has a confirmed payment             |
-| Confirmed        | The invoice has a confirmed and credited to account        |
-| Timeout        | The invoice has expired                         |
+| State          | Description                                           |
+|----------------|-------------------------------------------------------|
+| Pending        | The invoice is pending payment                        |
+| Paid           | Payment recieved by Cryptopay, but not yet confirmed by Bitcoin network                  |
+| Partpaid       | Payment recieved is less than the amount requested    |
+| Confirmed      | The invoice has a confirmed and credited into account |
+| Timeout        | The invoice has expired                               |
 
 
 
