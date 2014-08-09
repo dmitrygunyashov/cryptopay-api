@@ -270,6 +270,7 @@ An invoice JSON object is returned.
 | bitcoin_uri           | String   | The URI to create a QR-code with payment information            |
 | callback\_url         | String   | URL to which a callback should be made when the invoice is paid |
 | success\_redirect\_url| String   | URL to redirect customer after payment completes                |
+| txid                  | Array    | An array with Bitcoin transaction identifiers                   |
 
 **Example request :** `POST /api/v1/invoices`
 ```javascript
@@ -316,7 +317,8 @@ An invoice JSON object is returned.
    "callback_url":"http://example.com/cryptopay/callback",
    "success_redirect_url":"http://example.com/thankyou.html",
    "url":"http://cryptopay.me/orders/88b47b20-6227-4161-b0e0-44e06bef2b67/d",
-   "bitcoin_uri":"bitcoin:13DuuapeP9t8HRU5jD6sdgQVMioUA6P7m3?amount=0.0299&label=Order+%23123"
+   "bitcoin_uri":"bitcoin:13DuuapeP9t8HRU5jD6sdgQVMioUA6P7m3?amount=0.0299&label=Order+%23123",
+   "txid":[]
 }
 ```
 
@@ -360,6 +362,7 @@ A JSON object with the following parameters is returned.
 | bitcoin_uri           | String   | The URI to create a QR-code with payment information            |
 | callback\_url         | String   | URL to which a callback should be made when the invoice is paid |
 | success\_redirect\_url| String   | URL to redirect customer after payment completes                |
+| txid                  | Array    | An array with Bitcoin transaction identifiers                   |
 
 **Example request :** `GET /api/v1/invoices/70c7936b-f8ce-443a-8338-3762de0a1e92`
 
@@ -389,7 +392,8 @@ A JSON object with the following parameters is returned.
    "callback_url":"http://example.com/cryptopay/callback",
    "success_redirect_url":"http://example.com/thankyou.html",
    "url":"http://cryptopay.me/orders/88b47b20-6227-4161-b0e0-44e06bef2b67/d",
-   "bitcoin_uri":"bitcoin:13DuuapeP9t8HRU5jD6sdgQVMioUA6P7m3?amount=0.0299&label=Order+%23123"
+   "bitcoin_uri":"bitcoin:13DuuapeP9t8HRU5jD6sdgQVMioUA6P7m3?amount=0.0299&label=Order+%23123",
+   "txid":[]
 }
 ```
 
@@ -435,6 +439,7 @@ A JSON object of the new invoice with the following parameters is returned.
 | bitcoin_uri           | String   | The URI to create a QR-code with payment information            |
 | callback\_url         | String   | URL to which a callback should be made when the invoice is paid |
 | success\_redirect\_url| String   | URL to redirect customer after payment completes                |
+| txid                  | Array    | An array with Bitcoin transaction identifiers                   |
 
 **Example request :** `PUT /api/v1/invoices/d2b18f9a-587e-4c8c-b6d2-f3b03e778c02`
 
@@ -464,7 +469,8 @@ A JSON object of the new invoice with the following parameters is returned.
    "callback_url":"http://example.com/cryptopay/callback",
    "success_redirect_url":"http://example.com/thankyou.html",
    "url":"http://cryptopay.me/orders/88b47b20-6227-4161-b0e0-44e06bef2b67/d",
-   "bitcoin_uri":"bitcoin:13DuuapeP9t8HRU5jD6sdgQVMioUA6P7m3?amount=0.0299&label=Order+%23123"
+   "bitcoin_uri":"bitcoin:13DuuapeP9t8HRU5jD6sdgQVMioUA6P7m3?amount=0.0299&label=Order+%23123",
+   "txid":[]
 }
 ```
 
@@ -513,7 +519,8 @@ A JSON array of invoice objects is returned.
          "url":"http://cryptopay.me/orders/bb3a00dd-1a4f-4289-a813-36352b74bd4b/d",
          "bitcoin_uri":"bitcoin:19gC6QqWjzTnUqW422wcLLb5ocQZEZyboR?amount=0.0297",
          "callback_url":null,
-         "success_redirect_url":null
+         "success_redirect_url":null,
+         "txid":[]
       },
       {
          "uuid":"102a688f-1d57-40de-ad4b-279705c95e12",
@@ -532,7 +539,8 @@ A JSON array of invoice objects is returned.
          "url":"http://cryptopay.me/orders/102a688f-1d57-40de-ad4b-279705c95e12/d",
          "bitcoin_uri":"bitcoin:13AMbh6dyt67PU38L2me9Nu4yggQPoxZ9J?amount=0.0241",
          "callback_url":null,
-         "success_redirect_url":null
+         "success_redirect_url":null,
+         "txid":[]
       }
    ]
 }
