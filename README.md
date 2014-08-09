@@ -534,13 +534,11 @@ A JSON array of invoice objects is returned.
 }
 ```
 
-## Payment buttons, iframes and hosted checkouts
-
-### Payment buttons
+## Payment buttons
 
 Payment buttons can be used to accept bitcoin for an individual item or to integrate with your existing shopping cart solution. For example, you could create a new payment button for each shopping cart on your website, setting the total and order number in the button at checkout.
 
-### API: Create button (A)
+### Create button (A)
 
 Resource that creates a payment button token to accept bitcoin on your website.
 
@@ -618,11 +616,11 @@ This can be used, for example, to redirect the user to a 'confirmation' page whe
 
 It's important to note that the this event does not guarantee a payment has arrived successfully (any user could trigger this javascript event on the page). It is just a convenient way to move to the next step in your checkout. You should always verify the payment was received via the callback to your site
 
-### Payment iframes
+## Payment iframes
 
 Payment ifames can be used to accept bitcoin for an individual item without customers being redirected to an external site. For example, you could create a new ifame for each shopping cart on your website, setting the total and order number in the iframe at checkout.
 
-### API: Create an iframe (A)
+### Create an iframe (A)
 
 Resource that creates a payment button token to accept bitcoin on your website.
 
@@ -703,7 +701,7 @@ It's important to note that the this event does not guarantee a payment has arri
 Hosted pages can be used to accept bitcoin for an individual item or to integrate with your existing shopping cart solution. For example, you could create a new hosted page for each shopping cart on your website, setting the total and order number in the button at checkout. Your customer will be redirected to Cryptopay's page in order to complete payment.
 
 
-### API: Create hosted page (A)
+### Create hosted page (A)
 
 This call creates a hosted page token
 
@@ -836,7 +834,7 @@ In order to collect custom information you can use `form` parameter, for example
 
 The best way to track payments is to use Cryptopay's [callback](#payment-callbacks), whick is fired when payment is confirmed by Bitcoin network.
 
-### Payment callbacks
+## Payment callbacks
 
 When Cryptopay gets the payment, the backend will perform an HTTPS POST to the URL given as `callback_url`. The Content-Type for the request will be `application/json`.
 
@@ -860,7 +858,7 @@ $Callback = (array) $obj;
 header('HTTP/1.1 200 OK');
 ```
 
-#### Validation hash
+### Validation hash
 
 A `validation_hash` parameter is added to all callback requests. Its purpose is to authenticate the call from Cryptopay to the callback URL. This signature **must** be properly checked by the receiving server in order to ensure that the request is legitimate and hasn't been tampered with.
 
