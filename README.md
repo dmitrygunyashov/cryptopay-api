@@ -47,11 +47,7 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
 - [**Appendix**](#appendix)
    - [Codes and types tables](#codes-and-types-tables)
       - [Currencies](#currencies)
-      - [Operation types](#operation-types)
-     - [States](#states)
-         - [Transfer (Bitcoin transfer, Wire transfers) statuses](#transfer-bitcoin-transfer-wire-transfer-statuses)
-         - [E-mail transfer statuses](#e-mail-transfer-statuses)
-         - [Invoice statuses](#invoice-statuses)
+      - [Invoice statuses](#invoice-statuses)
 
 
 # General API description
@@ -921,24 +917,15 @@ The following currencies are available :
 | BTC    | Bitcoin        |
 | EUR    | Euro           |
 | GBP    | Pound Sterling |
-| USD    | US Dollars     |
+| USD    | US Dollar      |
 
 
-#### Invoice statuses
+### Invoice statuses
 
 | State          | Description                                           |
 |----------------|-------------------------------------------------------|
-| Pending        | The invoice is pending payment                        |
-| Paid           | Payment recieved by Cryptopay, but not yet confirmed by Bitcoin network                  |
-| Partpaid       | Payment recieved is less than the amount requested    |
-| Confirmed      | The invoice has a confirmed and credited into account |
-| Timeout        | The invoice has expired                               |
-
-
-
-# Left TODO
-
-
-## Misc
-
- * GET /api/v1/rate
+| Pending        | Invoice has been created                              |
+| Paid           | Payment received by Cryptopay, but is not confirmed by Bitcoin network yet                  |
+| Partpaid       | Payment received is less than the amount requested    |
+| Confirmed      | Invoice has been confirmed and credited into account |
+| Timeout        | Invoice has expired                               |
