@@ -29,8 +29,12 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
      - [View an invoice (A)](#view-an-invoice-a)
      - [Requote an invoice (A)](#requote-an-invoice-a)
      - [List invoices (A,P)](#list-invoices-ap)
-     - [Payment buttons and creation through signed GET request](#payment-buttons-and-creation-through-signed-get-request)
+  - [Payment buttons](#payment-buttons-iframes-and-hosted-checkouts)
+     - [Create button (A)](#create-button-a)
+     - [Customizing](#customizing)
+     - [Events handle](#events-hadle)
      - [Payment callbacks](#payment-callbacks)
+  - [Payment iframes](#payment-iframes)
 <p></p>
 - [**Appendix**](#appendix)
    - [Codes and types tables](#codes-and-types-tables)
