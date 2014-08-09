@@ -26,8 +26,8 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
      - [Get balances (A)](#get-balances-a)
   - [Invoices](#invoices)
      - [Create an invoice (A)](#create-an-invoice-a)
-     - [View an invoice (A)](#view-an-invoice-public)
-     - [Requote an invoice](#requote-an-invoice)
+     - [View an invoice (A)](#view-an-invoice-a)
+     - [Requote an invoice (A)](#requote-an-invoice-a)
      - [List invoices (A,P)](#list-invoices-ap)
      - [Payment buttons and creation through signed GET request](#payment-buttons-and-creation-through-signed-get-request)
      - [Payment callbacks](#payment-callbacks)
@@ -191,7 +191,7 @@ This call will return the balances in all currencies.
 
 | Name                | Type    | Description                                                                  |
 |---------------------|---------|------------------------------------------------------------------------------|
-| api_key             | String  | Your cryptopay api key                                                       |
+| api_key             | String  | Your Cryptopay api key                                                       |
 
 **Response**
 
@@ -226,42 +226,42 @@ This call creates an invoice
 
 **Request parameters**
 
-| Name                | Type    | Description                                                                  |
-|---------------------|---------|------------------------------------------------------------------------------|
-| api_key             | String  | Your cryptopay api key                                                       |
-| price               | Decimal | Requested amount to be credited upon payment                                 |
-| currency            | String  | Currency in which the amount is expressed, default is EUR  _(optional)_      |
-| description         | String  | Invoice description _(optional)_                                             |
-| id                  | String  | Merchant assigned order ID _(optional)_                                      |
-| name                | String  | Merchant assigned name _(optional)_                                          |
-| callback\_url       | String  | URL to which a callback should be made when the invoice is paid _(optional)_ |
-| success\_redirect\_url       | String  | URL to redirect customer after payment completes  _(optional)_      |
-| confirmations_count | Decimal | Manually require number of confirmations _(optional)_ |
-| callback_params     | Hash    | Additional parameters to include in callback |
+| Name                  | Type    | Description                                                                  |
+|-----------------------|---------|------------------------------------------------------------------------------|
+| api_key               | String  | Your Cryptopay api key                                                       |
+| price                 | Decimal | Requested amount to be credited upon payment                                 |
+| currency              | String  | Currency in which the amount is expressed, default is EUR  _(optional)_      |
+| description           | String  | Invoice description _(optional)_                                             |
+| id                    | String  | Merchant assigned order ID _(optional)_                                      |
+| name                  | String  | Merchant assigned name _(optional)_                                          |
+| callback\_url         | String  | URL to which a callback should be sent when the invoice is paid _(optional)_ |
+| success\_redirect\_url| String  | URL to redirect customer after payment completes  _(optional)_      |
+| confirmations_count   | Decimal | Required number of confirmations _(optional)_ |
+| callback_params       | Hash    | Additional parameters to include in callback _(optional)_ |
 **Response**
 
 An invoice JSON object is returned.
 
-| Name                | Type     | Description                                                     |
-|---------------------|----------|-----------------------------------------------------------------|
-| uuid                | UUID     | Invoice identifier                                              |
-| description         | String   | Invoice Description                                             |
-| status              | String   | Invoice status (Invoice state _(see appendix)_                  |
-| btc\_price          | Decimal  | Payable amount expressed in BTC                                 |
-| btc\_address        | String   | Bitcoin payment address                                         |
-| short\_id           | String   | Cryptopay's short id for invoice                                |
-| callback_params     | String   | Additional parameters to include in callback                    |
-| confirmation_count  | Decimal  | Required number of confirmations before callback is fired       |
-| id                  | String   | Merchant assigned order ID                                      |
-| name                | String   | Merchant assigned name _(optional)_                             |
-| price               | Decimal  | Requested amount to be credited upon payment                    |
-| currency            | String   | Currency in which the amount is expressed                       |
-| created\_at         | Datetime | Creation timestamp                                              |
-| valid\_till         | Datetime | Expiration timestamp                                            |
-| url                 | String   | The URL at which this invoice is publicly visible and payable   |
-| bitcoin_uri         | String   | The URI to create a QR-code with payment information    |
-| callback\_url       | String  | URL to which a callback should be made when the invoice is paid  |
-| success\_redirect\_url       | String  | URL to redirect customer after payment completes |
+| Name                  | Type     | Description                                                     |
+|-----------------------|----------|-----------------------------------------------------------------|
+| uuid                  | UUID     | Invoice identifier                                              |
+| description           | String   | Invoice description                                             |
+| status                | String   | Invoice status (Invoice state _(see appendix)_                  |
+| btc\_price            | Decimal  | Amount payable, expressed in BTC                                |
+| btc\_address          | String   | Bitcoin payment address                                         |
+| short\_id             | String   | Cryptopay's short id for invoice                                |
+| callback_params       | String   | Additional parameters to include in callback                    |
+| confirmation_count    | Decimal  | Required number of confirmations before callback is fired       |
+| id                    | String   | Merchant assigned order ID                                      |
+| name                  | String   | Merchant assigned name _(optional)_                             |
+| price                 | Decimal  | Requested amount to be credited upon payment                    |
+| currency              | String   | Currency in which the amount is expressed                       |
+| created\_at           | Timestamp| Creation timestamp                                              |
+| valid\_till           | Timestamp| Expiration timestamp                                            |
+| url                   | String   | The URL at which this invoice is publicly visible and payable   |
+| bitcoin_uri           | String   | The URI to create a QR-code with payment information            |
+| callback\_url         | String   | URL to which a callback should be made when the invoice is paid |
+| success\_redirect\_url| String   | URL to redirect customer after payment completes                |
 
 **Example request :** `POST /api/v1/invoices`
 ```javascript
@@ -316,42 +316,42 @@ An invoice JSON object is returned.
 
 It is the same call as the above one, except this call will return a subset of the JSON object representing an invoice.
 
-**Request path :** `/api/v1/invoices/{uuid}`
+**Request path :** `/api/v1/invoices/#{uuid}`
 
 **Request method :** `GET`
 
 **Request parameters**
 
-| Name 		| Type 	  | Description      	   |
-|---------------|---------|------------------------|
-| api_key       | String  | Your cryptopay api key |
-| uuid 		| UUID    | Quote identifier       |
+| Name 		| Type 	  | Description      	     |
+|---------|---------|------------------------|
+| api_key | String  | Your Cryptopay api key |
+| uuid 		| UUID    | Invoice identifier     |
 
 
 **Response**
 
 A JSON object with the following parameters is returned.
 
-| Name                   | Type     | Description                                                     |
-|------------------------|----------|-----------------------------------------------------------------|
-| uuid                   | UUID     | Invoice identifier                                              |
-| description            | String   | Invoice Description                                             |
-| status                 | String   | Invoice status (Invoice state _(see appendix)_                  |
-| btc\_price             | Decimal  | Payable amount expressed in BTC                                 |
-| btc\_address           | String   | Bitcoin payment address                                         |
-| short\_id              | String   | Cryptopay's short id for invoice                                |
-| callback_params        | String   | Additional parameters to include in callback                    |
-| confirmation_count     | Decimal  | Required number of confirmations before callback is fired       |
-| id                     | String   | Merchant assigned order ID                                      |
-| name                   | String   | Merchant assigned name _(optional)_                             |
-| price                  | Decimal  | Requested amount to be credited upon payment                    |
-| currency               | String   | Currency in which the amount is expressed                       |
-| created\_at            | Datetime | Creation timestamp                                              |
-| valid\_till            | Datetime | Expiration timestamp                                            |
-| url                    | String   | The URL at which this invoice is publicly visible and payable   |
-| bitcoin_uri            | String   | The URI to create a QR-code with payment information            |
-| callback\_url          | String   | URL to which a callback should be made when the invoice is paid |
-| success\_redirect\_url | String   | URL to redirect customer after payment completes                |
+| Name                  | Type     | Description                                                     |
+|-----------------------|----------|-----------------------------------------------------------------|
+| uuid                  | UUID     | Invoice identifier                                              |
+| description           | String   | Invoice description                                             |
+| status                | String   | Invoice status (Invoice state _(see appendix)_                  |
+| btc\_price            | Decimal  | Amount payable, expressed in BTC                                |
+| btc\_address          | String   | Bitcoin payment address                                         |
+| short\_id             | String   | Cryptopay's short id for invoice                                |
+| callback_params       | String   | Additional parameters to include in callback                    |
+| confirmation_count    | Decimal  | Required number of confirmations before callback is fired       |
+| id                    | String   | Merchant assigned order ID                                      |
+| name                  | String   | Merchant assigned name _(optional)_                             |
+| price                 | Decimal  | Requested amount to be credited upon payment                    |
+| currency              | String   | Currency in which the amount is expressed                       |
+| created\_at           | Timestamp| Creation timestamp                                              |
+| valid\_till           | Timestamp| Expiration timestamp                                            |
+| url                   | String   | The URL at which this invoice is publicly visible and payable   |
+| bitcoin_uri           | String   | The URI to create a QR-code with payment information            |
+| callback\_url         | String   | URL to which a callback should be made when the invoice is paid |
+| success\_redirect\_url| String   | URL to redirect customer after payment completes                |
 
 **Example request :** `GET /api/v1/invoices/70c7936b-f8ce-443a-8338-3762de0a1e92`
 
@@ -397,34 +397,36 @@ Cryptopay's invoice is valid for 10 minutes and will expire after that. This cal
 
 **Request parameters**
 
-| Name | Type | Description      |
-|------|------|------------------|
-| api_key       | String  | Your cryptopay api key |
-| uuid | UUID | Quote identifier |
+| Name 		| Type 	  | Description      	     |
+|---------|---------|------------------------|
+| api_key | String  | Your Cryptopay api key |
+| uuid 		| UUID    | Invoice identifier     |
 
 
 **Response**
 
 A JSON object of the new invoice with the following parameters is returned.
 
-| Name                | Type     | Description                                                     |
-|---------------------|----------|-----------------------------------------------------------------|
-| uuid                | UUID     | Invoice identifier                                              |
-| description         | String   | Invoice Description                                             |
-| status              | String   | Invoice status (Invoice state _(see appendix)_                  |
-| btc\_price          | Decimal  | Payable amount expressed in BTC                                 |
-| btc\_address        | String   | Bitcoin payment address                                         |
-| short\_id           | String   | Cryptopay's short id for invoice                                |
-| callback_params     | String   | Additional parameters to include in callback                    |
-| id                  | String   | Merchant assigned order ID                                      |
-| name                | String   | Merchant assigned name _(optional)_                             |
-| price               | Decimal  | Requested amount to be credited upon payment                    |
-| currency            | String   | Currency in which the amount is expressed                       |
-| created\_at         | Datetime | Creation timestamp                                              |
-| updated\_at         | Datetime | Update timestamp (not yet there)                                |
-| expires\_at         | Datetime | Expiration timestamp                                            |
-| url                 | String   | The URL at which this invoice is publicly visible and payable   |
-| bitcoin_uri         | String   | The URL to create a payment QR-code with payment information    |
+| Name                  | Type     | Description                                                     |
+|-----------------------|----------|-----------------------------------------------------------------|
+| uuid                  | UUID     | Invoice identifier                                              |
+| description           | String   | Invoice description                                             |
+| status                | String   | Invoice status (Invoice state _(see appendix)_                  |
+| btc\_price            | Decimal  | Amount payable, expressed in BTC                                |
+| btc\_address          | String   | Bitcoin payment address                                         |
+| short\_id             | String   | Cryptopay's short id for invoice                                |
+| callback_params       | String   | Additional parameters to include in callback                    |
+| confirmation_count    | Decimal  | Required number of confirmations before callback is fired       |
+| id                    | String   | Merchant assigned order ID                                      |
+| name                  | String   | Merchant assigned name _(optional)_                             |
+| price                 | Decimal  | Requested amount to be credited upon payment                    |
+| currency              | String   | Currency in which the amount is expressed                       |
+| created\_at           | Timestamp| Creation timestamp                                              |
+| valid\_till           | Timestamp| Expiration timestamp                                            |
+| url                   | String   | The URL at which this invoice is publicly visible and payable   |
+| bitcoin_uri           | String   | The URI to create a QR-code with payment information            |
+| callback\_url         | String   | URL to which a callback should be made when the invoice is paid |
+| success\_redirect\_url| String   | URL to redirect customer after payment completes                |
 
 **Example request :** `PUT /api/v1/invoices/d2b18f9a-587e-4c8c-b6d2-f3b03e778c02`
 
@@ -459,7 +461,7 @@ A JSON object of the new invoice with the following parameters is returned.
 ```
 
 
-### List invoices (A)
+### List invoices (A,P)
 
 This call will return a paginated list of invoices for the client account.
 
@@ -469,9 +471,9 @@ This call will return a paginated list of invoices for the client account.
 
 **Request parameters**
 
-| Name 		| Type 	  | Description      	   |
-|---------------|---------|------------------------|
-| api_key       | String  | Your cryptopay api key |
+| Name 		| Type 	  | Description      	     |
+|---------|---------|------------------------|
+| api_key | String  | Your Cryptopay api key |
 
 **Response**
 
