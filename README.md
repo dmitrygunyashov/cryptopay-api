@@ -212,7 +212,8 @@ A JSON object with the following attributes is returned :
 ```javascript
 {
   "GBP":"0.0",
-  "EUR":"21.23"
+  "EUR":"21.23",
+  "USD":"21.30"
   //"BTC" : "0.00" will be returned if Split setting was activated for the account
 }
 ```
