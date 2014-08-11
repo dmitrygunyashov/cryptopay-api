@@ -600,8 +600,7 @@ Sample embed code
 The button API will return a `token` parameter, which you can use to generate the embed HTML (described below).
 
 ```html
-    <a href="#" data-cryptopay-token="KsjvKK1Y9ayagBXDy7Cx">
-    <img src="https://cryptopay.me/assets/pay-btns/btn-sm-blue.png"></a>
+    <a href="#" class="cryptopayButton cpaGrey" data-cryptopay-token="7TWB2jAKgUntYGTjthkf"></a>
     <script src="https://cryptopay.me/assets/button.js"></script>
 ```
 
