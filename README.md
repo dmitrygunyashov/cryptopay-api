@@ -56,7 +56,7 @@ If your language of choice is Ruby we recommend using the [Cryptopay gem](https:
 
 Calls that require authentication are marked with "A" in the call description title.
 
-You can authenticate with Cryptopay by providing your API key in the HTTPS query. If your API key get compromised, you can easily reset it in [Settings - API](https://cryptopay.me/merchant/settings/api) tab.
+You can authenticate with Cryptopay by providing your API key in the HTTPS query. If your API key get compromised, you can easily reset it in [Settings - API](https://cryptopay.me/settings) tab.
 
 All API queries must be made over HTTPS, and plain HTTP will be refused. You must include your API key in all requests.
 
