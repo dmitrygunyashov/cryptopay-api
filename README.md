@@ -861,13 +861,15 @@ With the default of 25 attempts, the last retry will be 20 days later, with the 
 **Callback handling example, PHP**
 
 ```PHP  
-//Retrieving the data
-$json=file_get_contents('php://input');
-//Parsing the Json..
-$obj=json_decode($json);
-//Converting it into an array. You can now fetch $Callback["btc_price"] by example
-$Callback = (array) $obj;
-//HTTP response
+// Retrieving the data
+$json = file_get_contents('php://input');
+
+// Parsing the Json..
+$callback = json_decode($json, true);
+
+// You can now fetch $callback['btc_price'] for example
+
+// HTTP response
 header('HTTP/1.1 200 OK');
 ```
 
